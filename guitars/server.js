@@ -5,8 +5,21 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
-const PORT = 3000;
 const MONGO_STRING = process.env.MONGO_STRING;
+const methodOverride = require('method-override');
+const db = mongoose.connection;
+
+const PORT = process.env.PORT || 3000;
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+mongoose.connect(MONGODB_URI , { useUnifiedTopology: true }, { useNewUrlParser: true});
+
+db.on('error', (err) => console.log(err.message + ' is Mongod not running?'));
+db.on('connected', () => console.log('mongo connected: ', MONGODB_URI));
+db.on('disconnected', () => console.log('mongo disconnected'));
+
+db.on('open' , ()=>{});
 
 // =======================================
 //                DATABASE
@@ -17,9 +30,10 @@ const Guitars = require('./models/guitars.js');
 // =======================================
 //               MIDDLEWARE 
 // =======================================
-app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
-
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(methodOverride('_method'));
 
 //SETUP VIEW ENGINE
 app.set('view engine', 'jsx');
