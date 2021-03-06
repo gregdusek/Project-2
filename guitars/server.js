@@ -5,7 +5,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
-const MONGO_STRING = process.env.MONGO_STRING;
+const MONGOURI = process.env.MONGODB_URI
 const methodOverride = require('method-override');
 const db = mongoose.connection;
 
@@ -13,7 +13,11 @@ const PORT = process.env.PORT || 3000;
 
 const MONGODB_URI = process.env.MONGODB_URI
 
-mongoose.connect(MONGODB_URI , { useUnifiedTopology: true }, { useNewUrlParser: true});
+mongoose.connect(MONGOURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: true
+});
 
 db.on('error', (err) => console.log(err.message + ' is Mongod not running?'));
 db.on('connected', () => console.log('mongo connected: ', MONGODB_URI));
@@ -39,10 +43,6 @@ app.use(methodOverride('_method'));
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
-mongoose.connect(MONGO_STRING, { 
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
-});
 
 mongoose.connection.once('open', ()=> {
     console.log('connected to mongo');
