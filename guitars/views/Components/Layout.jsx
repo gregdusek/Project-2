@@ -1,7 +1,7 @@
 const React = require('react');
 
 class Layout extends React.Component {
-    render () {
+    render() {
         return (
             <html>
                 <head>
@@ -15,12 +15,12 @@ class Layout extends React.Component {
                             id="banner-font">Greg's Guitar Shop</h1>
                         </div>
                         <nav>
-                            <a href="/guitars">HOME</a>
-                            <a href="/guitars/inventory">INVENTORY</a>
-                            <a href="/guitars/new">NEW GUITAR</a>
-                            <a href={`/guitars/${this.props.id}/edit`}>EDIT GUITAR</a>
-                            <a href="/guitars/about">ABOUT</a>
-                            <a href="/guitars/contact">CONTACT  US</a>
+                            <a href="/">HOME</a>
+                            <a href="/gregs-guitars/">INVENTORY</a>
+                            <a href="/gregs-guitars/new">NEW GUITAR</a>
+                            {/* <a href={`/gregs-guitars/${this.props.id}/edit`}>EDIT GUITAR</a> */}
+                            <a href="/about/">ABOUT</a>
+                            <a href="/contact/">CONTACT  US</a>
                         </nav>
                     </header>
                     {this.props.children}

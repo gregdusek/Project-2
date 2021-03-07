@@ -15,10 +15,10 @@
 
 .container {
     background-image: url(https://res.cloudinary.com/gregdusek/image/upload/v1607578762/Mongoose%20Store/download_rvalhg_1_afjbcr.jpg);
-    background-size: 1920px;
-    background-repeat: repeat;
-    margin: 0 auto;
-    height: 100%;
+    background-size: contain !important;
+    padding: 0 auto !important;
+    margin: 0 auto !important;
+    height: 100% !important;
 }
 
 .banner {
@@ -41,7 +41,7 @@
 
 nav {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr 1fr;
     height: 35px;
     border-top: 2px solid gainsboro;

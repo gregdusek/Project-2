@@ -1,11 +1,10 @@
 const React = require('react');
-const Layout = require('./components/Layout.jsx');
+const Layout = require('./Components/Layout.jsx');
 
-class Index extends React.Component{
+class Inventory extends React.Component{
     render() {
         return (
             <Layout>
-                <body>
                     <h2 id="inventory">Available Inventory</h2>
                     <div id="main-container">
                         {
@@ -19,7 +18,7 @@ class Index extends React.Component{
                                                 Price: ${guitar.price}<br/>
                                                 Qty:  {guitar.qty}
                                             </h3>
-                                            <a href={`/guitars/${guitar.id}`}>
+                                            <a href={`/gregs-guitars/${guitar.id}`}>
                                                 <img src={guitar.img}/>
                                             </a>
                                         </div>
@@ -28,9 +27,8 @@ class Index extends React.Component{
                             })
                         }  
                     </div>             
-                </body>
             </Layout>
         )
     }
 }
-module.exports = Index; 
+module.exports = Inventory; 
