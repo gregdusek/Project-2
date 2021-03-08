@@ -1,5 +1,5 @@
 const React = require('react');
-const Layout = require('./components/Layout.jsx');
+const Layout = require('./Components/Layout.jsx');
 
 class New extends React.Component {
   render() {
