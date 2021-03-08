@@ -5,13 +5,13 @@ class Show extends React.Component {
     render() {
         return (
             <Layout id={this.props.guitar._id}>
-                <div class="show-content">
-                    <div class="show-info">
-                        <div class="button-div"> 
+                <div className="show-content">
+                    <div className="show-info">
+                        <div className="button-div"> 
                             <button id="buy-button" style={{display : this.props.guitar.qty <= 0? 'none' : ''}}>BUY</button>
-                            <a href={`/gregs-guitars/${this.props.guitar.id}/edit`}><button className="button" >Edit Listing</button></a>
+                            <a href={`/guitars/${this.props.guitar._id}/edit`}><button className="button" >Edit Listing</button></a>
                           {/* <a href="/guitars/inventory"><button id="delete-button">DELETE</button></a> */}
-                          <form action={`/gregs-guitars/${this.props.id}?_method=DELETE`} method="POST">
+                          <form action={`/guitars/${this.props.guitar.id}?_method=DELETE`} method="POST">
                                 <input className="button" type="submit" value="Remove Guitar"/>
                         </form> 
                         </div>   

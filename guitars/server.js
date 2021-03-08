@@ -106,7 +106,7 @@ app.get('/contact', (req, res) => {
 // =======================================
 //                  INDEX 
 // =======================================
-app.get('/gregs-guitars/', (req, res) => {
+app.get('/guitars/', (req, res) => {
     Guitars.find({}, (err, allGuitars) => {
         if(!err) {
             res.render('Index', {
@@ -121,7 +121,7 @@ app.get('/gregs-guitars/', (req, res) => {
 // =======================================
 //                  NEW 
 // =======================================
-app.get('/gregs-guitars/new', (req, res) => {
+app.get('/guitars/new', (req, res) => {
     res.render('New');
 });
 
@@ -129,25 +129,26 @@ app.get('/gregs-guitars/new', (req, res) => {
 // =======================================
 //                  DELETE 
 // =======================================
-app.delete('/gregs-guitars/:id', (req, res) => {
-    Guitars.findByIdAndDelete(req.params.id, function (err, foundGuitar){
+app.delete('/guitars/:id', (req, res) => {
+    Guitars.findByIdAndDelete(req.params.id, function (err, docs){
         if(!err){
             console.log(err)
         } else {
-            res.send("deleted :", docs);
+            console.log("deleted : ", docs);
         }
     });
-    res.redirect('/gregs-guitars')
-})
+    res.redirect('/guitars')
+    console.log(req.params.id);
+});
 
 
 // =======================================
 //                 UPDATE
 // =======================================
-app.put('/gregs-guitars/:id', (req, res) => {
+app.put('/guitars/:id', (req, res) => {
     Guitars.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedGuitar) => {
         if(!err){
-            res.redirect('/gregs-guitars/');
+            res.redirect('/guitars');
         } else {
             res.send(err);
         }
@@ -157,7 +158,7 @@ app.put('/gregs-guitars/:id', (req, res) => {
 // =======================================
 //                 CREATE 
 // =======================================
-app.post('/gregs-guitars/', (req, res) => {
+app.post('/guitars', (req, res) => {
     if(req.body.price < 0) {
         req.body.price = 'err'
     }
@@ -165,21 +166,21 @@ app.post('/gregs-guitars/', (req, res) => {
         req.body.qty = 'err'
     }
     Guitars.create(req.body, (err, createdGuitar) => {
-        if(!err) {
-            res.redirect('/greg-guitars')
+        if(err) {
+            res.send(err)
         } else {
-            res.send(err);
+            res.redirect('/guitars');
         }
-    });
+    })
 });
 
 // =======================================
 //                  EDIT
 // =======================================
-app.get('/gregs-guitars/:id/edit', (req, res) => {
+app.get('/guitars/:id/edit', (req, res) => {
     Guitars.findById(req.params.id, (err, foundGuitar) => {
         if(!err){
-            res.render('Edit.jsx', {
+            res.render('Edit', {
                 guitar: foundGuitar
             })
         } else {
@@ -191,7 +192,7 @@ app.get('/gregs-guitars/:id/edit', (req, res) => {
 // =======================================
 //                  SHOW 
 // =======================================
-app.get('/gregs-guitars/:id', (req, res)=>{
+app.get('/guitars/:id', (req, res)=>{
     Guitars.findById(req.params.id, (err, foundGuitar)=>{
         if(!err) {
             res.render('Show', {

@@ -7,7 +7,7 @@ class Edit extends React.Component {
         return (
          <Layout title={`Edit ${brand.toUpperCase()} Page`}
          stylesheet="/style.css">
-            <form action={`/gregs-guitars/${this.props.guitar._id}?_method=PUT`} method="POST">
+            <form action={`/guitars/${_id}?_method=PUT`} method="POST">
               <h2>
                 <ul>
                 Brand: <input type="text" name="name" defaultValue={brand} /><br/>

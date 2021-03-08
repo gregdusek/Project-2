@@ -10,15 +10,15 @@ class Inventory extends React.Component{
                         {
                             this.props.guitars.map((guitar) => {
                                 return (
-                                    <div class="guitar-content">
-                                        <div class="guitar-info">
+                                    <div className="guitar-content">
+                                        <div className="guitar-info">
                                             <h3 id="guitar-info-box">
                                                 Brand:  {guitar.brand}<br/>
                                                 Model:  {guitar.model}<br/>
                                                 Price: ${guitar.price}<br/>
                                                 Qty:  {guitar.qty}
                                             </h3>
-                                            <a href={`/gregs-guitars/${guitar.id}`}>
+                                            <a href={`/guitars/${guitar.id}`}>
                                                 <img src={guitar.img}/>
                                             </a>
                                         </div>
