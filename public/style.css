@@ -11,14 +11,16 @@
   --neon-border-color: rgb(0, 17, 255);
 }
 
-
+html {
+    overflow-y: scroll;
+}
 
 .container {
     background-image: url(https://res.cloudinary.com/gregdusek/image/upload/v1607578762/Mongoose%20Store/download_rvalhg_1_afjbcr.jpg);
-    background-size: 1920px;
-    background-repeat: repeat;
+    background-size: cover;
+    padding: 0 auto;
     margin: 0 auto;
-    height: 100%;
+    height: 100vh;
 }
 
 .banner {
@@ -41,7 +43,7 @@
 
 nav {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr 1fr;
     height: 35px;
     border-top: 2px solid gainsboro;
@@ -156,9 +158,9 @@ nav a {
     text-shadow: 2px 2px 2px black;
 }
 
-.button-div {
+/* .button-div {
     
-}
+} */
 
 h2 {
     display: flex;

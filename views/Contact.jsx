@@ -2,11 +2,13 @@ const React = require('react');
 const Layout = require('./Components/Layout.jsx');
 
 class Contact extends React.Component {
-    render(){
+    render() {
         return (
             <Layout>
                 <h2>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam reiciendis aperiam ad officia obcaecati aliquid assumenda ullam, beatae maiores quo culpa error neque similique dolore placeat nobis ut. Aliquam, non!
+                    <h2>Contact us at the following:</h2>
+                    <h2>Phone: 888-Buy-More</h2>
+                    <h2>Email: info@gregsguitars.com</h2>
                 </h2>
             </Layout>
         )

@@ -1,18 +1,17 @@
 const React = require('react');
-const Layout = require('./components/Layout.jsx');
+const Layout = require('./Components/Layout.jsx');
 
-class Index extends React.Component{
+class Inventory extends React.Component{
     render() {
         return (
             <Layout>
-                <body>
                     <h2 id="inventory">Available Inventory</h2>
                     <div id="main-container">
                         {
                             this.props.guitars.map((guitar) => {
                                 return (
-                                    <div class="guitar-content">
-                                        <div class="guitar-info">
+                                    <div className="guitar-content">
+                                        <div className="guitar-info">
                                             <h3 id="guitar-info-box">
                                                 Brand:  {guitar.brand}<br/>
                                                 Model:  {guitar.model}<br/>
@@ -28,9 +27,8 @@ class Index extends React.Component{
                             })
                         }  
                     </div>             
-                </body>
             </Layout>
         )
     }
 }
-module.exports = Index; 
+module.exports = Inventory; 

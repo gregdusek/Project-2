@@ -1,67 +1,77 @@
+if(process.env.NODE_ENV === 'development'){
+    require('dotenv').config()
+};//<= Heroku
+
 // =======================================
 //              DEPENDENCIES
 // =======================================
 require('dotenv').config();
-const mongoose = require('mongoose');
 const express = require('express');
-const app = express();
-const MONGOURI = process.env.MONGODB_URI
 const methodOverride = require('method-override');
+const mongoose = require('mongoose');
+const app = express();
 const db = mongoose.connection;
-
-const PORT = process.env.PORT || 3000;
-
-const MONGODB_URI = process.env.MONGODB_URI
-
-mongoose.connect(MONGOURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: true
-});
-
-db.on('error', (err) => console.log(err.message + ' is Mongod not running?'));
-db.on('connected', () => console.log('mongo connected: ', MONGODB_URI));
-db.on('disconnected', () => console.log('mongo disconnected'));
-
-db.on('open' , ()=>{});
-
-// =======================================
-//                DATABASE
-// =======================================
 const Guitars = require('./models/guitars.js');
 
 
 // =======================================
+//                  PORT
+// =======================================
+// Allow use of Heroku's port or your own local port, depending on the environment
+const PORT = process.env.PORT || 3001;
+
+// =======================================
+//                DATABASE
+// =======================================
+// How to connect to the database either via heroku or locally
+const MONGODB_URI = process.env.MONGODB_URI
+
+// Connect to Mongo
+mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+});
+
+// Error / success
+db.on('error', (err) => console.log(err.message + ' is Mongod not running?'));
+db.on('connected', () => console.log('mongo connected: ', MONGODB_URI));
+db.on('disconnected', () => console.log('mongo disconnected'));
+
+// open the connection to mongo
+db.on('open' , ()=>{});
+
+// =======================================
 //               MIDDLEWARE 
 // =======================================
+
+//use public folder for static assets
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(methodOverride('_method'));
+
+// populates req.body with parsed info from forms - if no data from forms will return an empty object {}
+app.use(express.urlencoded({ extended: false })); // extended: false - does not allow nested objects in query strings
+app.use(express.json()); // returns middleware that only parses JSON - may or may not need it depending on your project
+
+app.use(methodOverride('_method')); // allow POST, PUT and DELETE from a form
 
 //SETUP VIEW ENGINE
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
 
-mongoose.connection.once('open', ()=> {
-    console.log('connected to mongo');
-});
+// mongoose.connection.once('open', ()=> {
+//     console.log('connected to mongo');
+// });
 
 // =======================================
 //                 ROUTES 
 // =======================================
-app.get('/' , (req, res) => {
-    res.send('Hello World!');
-  });
-
-
-
-  app.get('/guitars', (req, res) => {
+app.get('/', (req, res) => {
     Guitars.find({}, (err, allGuitars) => {
         if(!err) {
             res.render('Home', {
-                Guitars: allGuitars,
+                guitars: allGuitars,
             });
         } else {
             res.send(err)
@@ -69,17 +79,7 @@ app.get('/' , (req, res) => {
     });
 });
 
-app.delete('/guitars/:id', (req, res) => {
-    Guitars.findByIdAndDelete(req.params.id, (err, foundGuitar) => {
-        if(!err){
-            res.redirect('/guitars')
-        } else {
-            res.send(err);
-        }
-    })
-})
-
-app.get('/guitars/about', (req, res) => {
+app.get('/about', (req, res) => {
     Guitars.find({}, (err, allGuitars) => {
         if(!err) {
             res.render('About', {
@@ -91,7 +91,7 @@ app.get('/guitars/about', (req, res) => {
     });
 });
 
-app.get('/guitars/contact', (req, res) => {
+app.get('/contact', (req, res) => {
     Guitars.find({}, (err, allGuitars) => {
         if(!err) {
             res.render('Contact', {
@@ -106,10 +106,10 @@ app.get('/guitars/contact', (req, res) => {
 // =======================================
 //                  INDEX 
 // =======================================
-app.get('/guitars/inventory', (req, res) => {
+app.get('/guitars/', (req, res) => {
     Guitars.find({}, (err, allGuitars) => {
         if(!err) {
-            res.render('Inventory', {
+            res.render('Index', {
                 guitars: allGuitars,
             });
         } else {
@@ -130,21 +130,23 @@ app.get('/guitars/new', (req, res) => {
 //                  DELETE 
 // =======================================
 app.delete('/guitars/:id', (req, res) => {
-    Guitar.findByIdAndDelete(req.params.id, (err, foundGuitar) => {
+    Guitars.findByIdAndDelete(req.params.id, function (err, docs){
         if(!err){
-            res.redirect('/guitars/home')
+            console.log(err)
         } else {
-            res.send(err);
+            console.log("deleted : ", docs);
         }
-    })
-})
+    });
+    res.redirect('/guitars')
+    console.log(req.params.id);
+});
 
 
 // =======================================
 //                 UPDATE
 // =======================================
 app.put('/guitars/:id', (req, res) => {
-    Guitar.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedGuitar) => {
+    Guitars.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedGuitar) => {
         if(!err){
             res.redirect('/guitars');
         } else {
@@ -156,7 +158,7 @@ app.put('/guitars/:id', (req, res) => {
 // =======================================
 //                 CREATE 
 // =======================================
-app.post('/guitars/', (req, res) => {
+app.post('/guitars', (req, res) => {
     if(req.body.price < 0) {
         req.body.price = 'err'
     }
@@ -164,12 +166,12 @@ app.post('/guitars/', (req, res) => {
         req.body.qty = 'err'
     }
     Guitars.create(req.body, (err, createdGuitar) => {
-        if(!err) {
-            res.redirect('/guitars')
+        if(err) {
+            res.send(err)
         } else {
-            res.send(err);
+            res.redirect('/guitars');
         }
-    });
+    })
 });
 
 // =======================================

@@ -2,7 +2,7 @@ const React = require('react');
 const Layout = require('./Components/Layout.jsx');
 
 class About extends React.Component {
-    render(){
+    render() {
         return (
             <Layout>
                 <h2>

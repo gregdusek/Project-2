@@ -2,16 +2,17 @@ const React = require('react');
 const Layout = require('./Components/Layout.jsx');
 
 class Show extends React.Component {
-    render(){
+    render() {
         return (
             <Layout id={this.props.guitar._id}>
-                <div class="show-content">
-                    <div class="show-info">
-                        <div class="button-div"> 
+                <div className="show-content">
+                    <div className="show-info">
+                        <div className="button-div"> 
                             <button id="buy-button" style={{display : this.props.guitar.qty <= 0? 'none' : ''}}>BUY</button>
-                          <a href="/guitars/inventory"><button id="delete-button">DELETE</button></a>
-                          <form method="POST" action={`/guitars/${this.props.id}?_method=DELETE`}>
-                        <input type="submit" value={`DELETE THE ${this.props.guitar.brand.toUpperCase()}`}/>
+                            <a href={`/guitars/${this.props.guitar._id}/edit`}><button className="button" >Edit Listing</button></a>
+                          {/* <a href="/guitars/inventory"><button id="delete-button">DELETE</button></a> */}
+                          <form action={`/guitars/${this.props.guitar.id}?_method=DELETE`} method="POST">
+                                <input className="button" type="submit" value="Remove Guitar"/>
                         </form> 
                         </div>   
                         <h3 id="show-info-box">
